@@ -1,36 +1,34 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
-
-import { Button, Checkbox, Form, Input, Typography, Divider } from 'antd';
+import { useState } from 'react';
+import { Button, Checkbox, Form, Input, Typography, Divider, message } from 'antd';
 import { Link } from 'react-router-dom';
 
 import { GoogleLogin } from '@react-oauth/google';
-import TelegramLoginButton from 'telegram-login-button'
+import TelegramLoginButton from 'telegram-login-button';
 
 import axios from "../../../api";
 import { useDispatch, useSelector } from 'react-redux';
 
-
 const { Title, Text } = Typography;
 
-
 const Register = () => {
-  const { loading } = useSelector(state => state)
-  const dispatch = useDispatch()
+  const { loading } = useSelector(state => state);
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
 
   const onFinish = async (values) => {
-    console.log(values)
     try {
-      dispatch({ type: "LOADING" })
+      dispatch({ type: "LOADING" });
       const { data } = await axios.post('/auth', values);
-      dispatch({ type: "LOGIN", token: data.payload.token, user: data.payload.user })
+      dispatch({ type: "LOGIN", token: data.payload.token, user: data.payload.user });
+      message.success(data.message || 'Registration successful!');
+    } catch (error) {
+      dispatch({ type: "ERROR" });
+      message.error(error.response?.data?.message || 'Registration failed. Please try again.');
     }
-    catch (error) {
-      dispatch({ type: "ERROR" })
-    }
-    form.resetFields()
+    form.resetFields();
   };
+
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
@@ -73,7 +71,7 @@ const Register = () => {
       <Form.Item
         style={{ marginBottom: "0px" }}
         label="Username"
-        name="Username"
+        name="username"
         rules={[
           {
             required: true,
@@ -97,7 +95,6 @@ const Register = () => {
       >
         <Input.Password />
       </Form.Item>
-
 
       <Form.Item
         name="remember"
@@ -125,7 +122,7 @@ const Register = () => {
           disabled={loading}
           onSuccess={async (credentialResponse) => {
             const decode = credentialResponse.credential.split(".")[1];
-            const userData = JSON.parse(atob(decode))
+            const userData = JSON.parse(atob(decode));
 
             const user = {
               username: userData.email,
@@ -133,13 +130,14 @@ const Register = () => {
               first_name: userData.name
             }
             const response = await axios.post('/auth', user);
-            console.log(response.data)
+            message.success(response.data.message || 'Google registration successful!');
           }}
           onError={() => {
             console.log('Login Failed');
+            message.error('Google registration failed. Please try again.');
           }}
           useOneTap
-          text="Login with Google"
+          text="Register with Google"
           size="medium"
           theme="filled_blue"
           className='w-full'
@@ -149,8 +147,7 @@ const Register = () => {
           disabled={loading}
           onSuccess={async (credentialResponse) => {
             const decode = credentialResponse.credential.split(".")[1];
-            const userData = JSON.parse(atob(decode))
-
+            const userData = JSON.parse(atob(decode));
 
             const user = {
               username: userData.username,
@@ -158,7 +155,7 @@ const Register = () => {
               first_name: userData.first_name
             }
             const response = await axios.post('/auth/login', user);
-            console.log(response.data)
+            message.success(response.data.message || 'Telegram registration successful!');
           }}
           botName={import.meta.env.VITE_TELEGRAM_BOT_USERNAME}
           dataOnauth={user => console.log(user)}
@@ -166,11 +163,11 @@ const Register = () => {
           theme="filled_blue"
           className='w-full mt-[20px] ml-[60px]'
           width={350}
-        />,
+        />
       </div>
-      <Text className='mt-[20px] block text-center'> Already have an account? <Link to="/auth">Login </Link> </Text>
+      <Text className='mt-[20px] block text-center'> Already have an account? <Link to="/auth">Login</Link> </Text>
     </Form>
   )
 }
 
-export default Register
+export default Register;
