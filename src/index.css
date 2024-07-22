@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.shadow-cm{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.tgme_widget_login.large button.tgme_widget_login_button {
+    width: 301px;
+    font-size: 16px;
+    line-height: 20px;
+    padding: 7px 42px 7px;
+    border-radius: 20px;
+    border-radius: 5px;
+}
