@@ -2,8 +2,8 @@ import { LOGIN, REGISTER, LOADING, ERROR } from '../actions/action-types';
 
 
 const initialState = {
-    token: null,
-    user: null,
+    token: localStorage.getItem("token") || null,
+    user: localStorage.getItem("user") || null,
     loading: false,
     isError: false,
     isSuccess: false,
@@ -15,6 +15,8 @@ export const authReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN:
         case REGISTER:
+            localStorage.setItem("token", action.token)
+            localStorage.setItem("user", JSON.stringify(action.user))
             return {
                 token: action.token,
                 user: action.user,
