@@ -57,7 +57,7 @@ const Header = () => {
   const customRequest = ({ onSuccess }) => {
     setTimeout(() => {
       onSuccess("ok");
-    }, 0);
+    }, 30);
   };
 
   return (
@@ -101,13 +101,15 @@ const Header = () => {
           onClick={showModal}
         >
           <img
-        
             src={imageUrl}
             alt="User Avatar"
             className="user__img"
             style={{ width: "35px", height: "35px", borderRadius: "50%" }}
-            onError={() => setImageUrl("https://cdn-icons-png.flaticon.com/512/149/149071.png")}
-           
+            onError={() =>
+              setImageUrl(
+                "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+              )
+            }
           />
         </div>
       </div>
