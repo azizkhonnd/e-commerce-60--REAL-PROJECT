@@ -19,3 +19,7 @@
     color: #fff;
     background-color: #1677ff;
 }
+
+:where(.css-dev-only-do-not-override-1uq9j6g).ant-input-search .ant-input-search-button {
+    height: 31px;
+}
