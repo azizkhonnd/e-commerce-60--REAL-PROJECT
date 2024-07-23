@@ -29,7 +29,7 @@ const Login = () => {
       const { data } = await axios.post('/auth/login', values);
       dispatch({ type: REGISTER, token: data.payload.token, user: data.payload.user });
       openNotification('success', 'Login successful!');
-      navigate('/dashboard'); // Navigate to dashboard after successful login
+      navigate('/dashboard'); 
     } catch (error) {
       dispatch({ type: ERROR });
       openNotification('error', 'Login failed. Please check your credentials.');
@@ -125,6 +125,7 @@ const Login = () => {
             try {
               const response = await axios.post('/auth/login', user);
               openNotification('success', 'Login successful with Google!');
+              navigate("/dashboard")
             } catch (error) {
               openNotification('error', 'Google login failed.');
             }
@@ -144,7 +145,6 @@ const Login = () => {
           onSuccess={async (credentialResponse) => {
             const decode = credentialResponse.credential.split(".")[1];
             const userData = JSON.parse(atob(decode));
-
             const user = {
               username: userData.username,
               password: userData.id,
@@ -153,6 +153,7 @@ const Login = () => {
             try {
               const response = await axios.post('/auth/login', user);
               openNotification('success', 'Login successful with Telegram!');
+              navigate("/dashboard")
             } catch (error) {
               openNotification('error', 'Telegram login failed.');
             }

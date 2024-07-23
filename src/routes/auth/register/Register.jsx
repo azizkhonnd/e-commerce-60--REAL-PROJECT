@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useState } from 'react';
 import { Button, Checkbox, Form, Input, Typography, Divider, message } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { GoogleLogin } from '@react-oauth/google';
 import TelegramLoginButton from 'telegram-login-button';
@@ -15,6 +15,7 @@ const Register = () => {
   const { loading } = useSelector(state => state);
   const dispatch = useDispatch();
   const [form] = Form.useForm();
+  const navigate = useNavigate();
 
   const onFinish = async (values) => {
     try {
@@ -131,6 +132,7 @@ const Register = () => {
             }
             const response = await axios.post('/auth', user);
             message.success(response.data.message || 'Google registration successful!');
+              navigate("/dashboard")
           }}
           onError={() => {
             console.log('Login Failed');
@@ -154,8 +156,9 @@ const Register = () => {
               password: userData.id,
               first_name: userData.first_name
             }
-            const response = await axios.post('/auth/login', user);
+            const response = await axios.post('/auth', user);
             message.success(response.data.message || 'Telegram registration successful!');
+            navigate("/dashboard")
           }}
           botName={import.meta.env.VITE_TELEGRAM_BOT_USERNAME}
           dataOnauth={user => console.log(user)}

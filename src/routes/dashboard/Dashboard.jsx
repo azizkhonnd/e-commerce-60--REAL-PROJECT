@@ -7,6 +7,7 @@ import Header from "../../components/header/Header";
 
 const Dashboard = () => {
     const [collapsed, setCollapsed] = useState(false);
+    
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Sider collapsed={collapsed} />

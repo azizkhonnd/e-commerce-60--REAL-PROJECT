@@ -1,10 +1,11 @@
-import { useSelector } from "react-redux"
-import { Navigate } from "react-router-dom"
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
+import Dashboard from '../../routes/dashboard/Dashboard';
+
 const Private = () => {
     const auth = useSelector(state => state)
 
-    return auth.token ? <h1>Dashboard</h1> : <Navigate to="/auth" />
-
+    return auth.token ? <Dashboard /> : <Navigate to="/auth" />
 }
 
-export default Private
+export default Private;
