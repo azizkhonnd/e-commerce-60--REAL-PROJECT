@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.shadow-cm{
+.shadow-cm {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
@@ -15,11 +15,32 @@
     border-radius: 5px;
 }
 
-.ant-menu-item:has(:active){
+.ant-menu-item:has(:active) {
     color: #fff;
     background-color: #1677ff;
 }
 
 :where(.css-dev-only-do-not-override-1uq9j6g).ant-input-search .ant-input-search-button {
     height: 31px;
+}
+
+:where(.css-dev-only-do-not-override-1uq9j6g).ant-modal .ant-modal-content {
+    position: relative;
+    background-color: #ffffff;
+    background-clip: padding-box;
+    border: 0;
+    border-radius: 8px;
+    box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+    pointer-events: auto;
+    padding: 53px 41px;
+}
+
+
+.user__img {
+    margin-top: -4px;
+    margin-right: 25px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    cursor: pointer;
 }
