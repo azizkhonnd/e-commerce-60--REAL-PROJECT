@@ -44,3 +44,7 @@
     border-radius: 50%;
     cursor: pointer;
 }
+
+:where(.css-1uq9j6g).ant-input-search .ant-input-search-button {
+    height: 31px;
+}
