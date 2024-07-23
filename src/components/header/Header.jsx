@@ -63,8 +63,8 @@ const Header = () => {
       style={{
         display: "flex",
         justifyContent: "center",
-        padding: "10px 40px",
-        background: "#f0f2f5",
+        padding: "15px 40px",
+        background: "#001529",
         width: "100%",
         position: "relative",
       }}
