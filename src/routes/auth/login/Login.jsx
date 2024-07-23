@@ -1,17 +1,30 @@
 /* eslint-disable no-unused-vars */
-import { useState } from 'react';
-import { Button, Checkbox, Form, Input, Typography, Divider, notification } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
-import { GoogleLogin } from '@react-oauth/google';
-import TelegramLoginButton from 'telegram-login-button';
+import { useState } from "react";
+import {
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  Typography,
+  Divider,
+  notification,
+} from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
+import TelegramLoginButton from "telegram-login-button";
 import axios from "../../../api/index";
-import { useDispatch, useSelector } from 'react-redux';
-import { LOGIN, REGISTER, LOADING, ERROR } from '../../../redux/actions/action-types';
+import { useDispatch, useSelector } from "react-redux";
+import {
+  LOGIN,
+  REGISTER,
+  LOADING,
+  ERROR,
+} from "../../../redux/actions/action-types";
 
 const { Title, Text } = Typography;
 
 const Login = () => {
-  const loading = useSelector(state => state.loading);
+  const loading = useSelector((state) => state.loading);
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -19,31 +32,35 @@ const Login = () => {
   const openNotification = (type, message) => {
     notification[type]({
       message,
-      placement: 'topRight',
+      placement: "topRight",
     });
   };
 
   const onFinish = async (values) => {
     try {
       dispatch({ type: LOADING });
-      const { data } = await axios.post('/auth/login', values);
-      dispatch({ type: REGISTER, token: data.payload.token, user: data.payload.user });
-      openNotification('success', 'Login successful!');
-      navigate('/dashboard'); 
+      const { data } = await axios.post("/auth/login", values);
+      dispatch({
+        type: REGISTER,
+        token: data.payload.token,
+        user: data.payload.user,
+      });
+      openNotification("success", "Login successful!");
+      navigate("/dashboard");
     } catch (error) {
       dispatch({ type: ERROR });
-      openNotification('error', 'Login failed. Please check your credentials.');
+      openNotification("error", "Login failed. Please check your credentials.");
     }
     form.resetFields();
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    console.log("Failed:", errorInfo);
   };
 
   return (
     <Form
-      layout='vertical'
+      layout="vertical"
       name="basic"
       labelCol={{
         span: 8,
@@ -61,7 +78,7 @@ const Login = () => {
       onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
-      <Title className='text-center'>Login</Title>
+      <Title className="text-center">Login</Title>
       <Form.Item
         style={{ marginBottom: "0px" }}
         label="Username"
@@ -69,7 +86,7 @@ const Login = () => {
         rules={[
           {
             required: true,
-            message: 'Please input your username!',
+            message: "Please input your username!",
           },
         ]}
       >
@@ -82,7 +99,7 @@ const Login = () => {
         rules={[
           {
             required: true,
-            message: 'Please input your password!',
+            message: "Please input your password!",
           },
         ]}
       >
@@ -100,17 +117,22 @@ const Login = () => {
       </Form.Item>
 
       <Form.Item
-        className='w-full'
+        className="w-full"
         wrapperCol={{
           span: 24,
         }}
       >
-        <Button disabled={loading} className='w-full' type="primary" htmlType="submit">
+        <Button
+          disabled={loading}
+          className="w-full"
+          type="primary"
+          htmlType="submit"
+        >
           Login
         </Button>
       </Form.Item>
-      <Divider className='text-center text-gray-500 mb-[20px]'>Or</Divider>
-      <div className='flex justify-center flex-col'>
+      <Divider className="text-center text-gray-500 mb-[20px]">Or</Divider>
+      <div className="flex justify-center flex-col">
         <GoogleLogin
           disabled={loading}
           onSuccess={async (credentialResponse) => {
@@ -123,21 +145,21 @@ const Login = () => {
               first_name: userData.name,
             };
             try {
-              const response = await axios.post('/auth/login', user);
-              openNotification('success', 'Login successful with Google!');
-              navigate("/dashboard")
+              const response = await axios.post("/auth/login", user);
+              openNotification("success", "Login successful with Google!");
+              navigate("/dashboard");
             } catch (error) {
-              openNotification('error', 'Google login failed.');
+              openNotification("error", "Google login failed.");
             }
           }}
           onError={() => {
-            openNotification('error', 'Google login failed.');
+            openNotification("error", "Google login failed.");
           }}
           useOneTap
           text="Login with Google"
           size="large"
           theme="filled_blue"
-          className='w-full'
+          className="w-full"
           width={300}
         />
         <TelegramLoginButton
@@ -151,24 +173,27 @@ const Login = () => {
               first_name: userData.first_name,
             };
             try {
-              const response = await axios.post('/auth/login', user);
-              openNotification('success', 'Login successful with Telegram!');
-              navigate("/dashboard")
+              const response = await axios.post("/auth/login", user);
+              openNotification("success", "Login successful with Telegram!");
+              navigate("/dashboard");
             } catch (error) {
-              openNotification('error', 'Telegram login failed.');
+              openNotification("error", "Telegram login failed.");
             }
           }}
           botName={import.meta.env.VITE_TELEGRAM_BOT_USERNAME}
           dataOnauth={(user) => console.log(user)}
           size="large"
           theme="filled_blue"
-          className='w-full mt-[20px] ml-[60px]'
+          className="w-full mt-[20px] ml-[60px]"
           width={350}
         />
       </div>
-      <Text className='mt-[20px] block text-center'> Don`t have an account? <Link to="/auth/register">Register </Link> </Text>
+      <Text className="mt-[20px] block text-center">
+        {" "}
+        Don`t have an account? <Link to="/auth/register">Register </Link>{" "}
+      </Text>
     </Form>
   );
-}
+};
 
 export default Login;

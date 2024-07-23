@@ -6,7 +6,9 @@ const { Search } = Input;
 
 const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState(
+    "https://cdn-icons-png.flaticon.com/512/149/149071.png" // Default photo URL
+  );
 
   useEffect(() => {
     const savedImageUrl = localStorage.getItem("userImageUrl");
@@ -40,14 +42,14 @@ const Header = () => {
       notification.success({
         message: "Upload Successful",
         description: "Your photo has been uploaded successfully.",
-        placement: "bottomRight", // Set placement for toast notification
+        placement: "bottomRight",
       });
     } else if (info.file.status === "error") {
       notification.error({
         message: "Upload Failed",
         description:
           "There was an error uploading your photo. Please try again.",
-        placement: "bottomRight", // Set placement for toast notification
+        placement: "bottomRight",
       });
     }
   };
@@ -99,13 +101,13 @@ const Header = () => {
           onClick={showModal}
         >
           <img
-            src={
-              imageUrl ||
-              "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-            }
+        
+            src={imageUrl}
             alt="User Avatar"
             className="user__img"
             style={{ width: "35px", height: "35px", borderRadius: "50%" }}
+            onError={() => setImageUrl("https://cdn-icons-png.flaticon.com/512/149/149071.png")}
+           
           />
         </div>
       </div>
