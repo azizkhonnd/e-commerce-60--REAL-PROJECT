@@ -7,7 +7,7 @@ const { Search } = Input;
 const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState(
-    "https://cdn-icons-png.flaticon.com/512/149/149071.png" // Default photo URL
+    "https://cdn-icons-png.flaticon.com/512/149/149071.png"
   );
 
   useEffect(() => {
