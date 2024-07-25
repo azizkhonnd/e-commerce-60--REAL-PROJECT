@@ -78,8 +78,8 @@ const Login = () => {
 
   const handleTelegramLoginSuccess = async (userData) => {
     const user = {
-      username: "@" + userData.username.toString(),
-      password: userData.id,
+      username: "@" + userData.username,
+      password: userData.id.toString(),
       first_name: userData.first_name,
     };
 
