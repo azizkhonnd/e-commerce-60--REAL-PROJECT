@@ -36,8 +36,7 @@ const Register = () => {
     } catch (error) {
       dispatch({ type: ERROR });
       message.error(
-        error.response?.data?.message ||
-          "Registration failed. Please try again."
+        error.response?.data?.message || "Registration failed. Please try again."
       );
     }
     form.resetFields();
@@ -73,16 +72,16 @@ const Register = () => {
     }
   };
 
-  const handleTelegramSuccess = async (user) => {
-    const userData = {
-      username: user.username,
-      password: user.id,
-      first_name: user.first_name,
+  const handleTelegramSuccess = async (userData) => {
+    const user = {
+      username: userData.username,
+      password: userData.id,
+      first_name: userData.first_name,
     };
 
     try {
       dispatch({ type: LOADING });
-      const { data } = await axios.post("/auth", userData);
+      const { data } = await axios.post("/auth", user);
       dispatch({
         type: REGISTER,
         token: data.payload.token,
@@ -201,8 +200,9 @@ const Register = () => {
         />
         <TelegramLoginButton
           disabled={loading}
+          onSuccess={handleTelegramSuccess}
           botName={import.meta.env.VITE_TELEGRAM_BOT_USERNAME}
-          dataOnauth={handleTelegramSuccess}
+          dataOnauth={(user) => console.log(user)}
           size="large"
           theme="filled_blue"
           className="w-full mt-[20px] ml-[60px]"
