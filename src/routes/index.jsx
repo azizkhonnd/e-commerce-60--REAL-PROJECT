@@ -18,7 +18,7 @@ const Login = lazy(() => import("./auth/login/Login"));
 const Register = lazy(() => import("./auth/register/Register"));
 
 const RouteController = () => {
-  const auth = useSelector((state) => state);
+  const auth = useSelector((state) => state.token);
   return useRoutes([
     {
       path: "",
