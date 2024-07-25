@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-import { useState } from "react";
 import {
   Button,
   Checkbox,
@@ -10,33 +8,33 @@ import {
   message,
 } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-
 import { GoogleLogin } from "@react-oauth/google";
 import TelegramLoginButton from "telegram-login-button";
-
 import axios from "../../../api";
 import { useDispatch, useSelector } from "react-redux";
+import { REGISTER, LOADING, ERROR } from "../../../redux/actions/action-types";
 
 const { Title, Text } = Typography;
 
 const Register = () => {
-  const { loading } = useSelector((state) => state);
+  const loading = useSelector((state) => state.loading);
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
     try {
-      dispatch({ type: "LOADING" });
+      dispatch({ type: LOADING });
       const { data } = await axios.post("/auth", values);
       dispatch({
-        type: "LOGIN",
+        type: REGISTER,
         token: data.payload.token,
         user: data.payload.user,
       });
       message.success(data.message || "Registration successful!");
+      navigate("/dashboard");
     } catch (error) {
-      dispatch({ type: "ERROR" });
+      dispatch({ type: ERROR });
       message.error(
         error.response?.data?.message ||
           "Registration failed. Please try again."
@@ -47,6 +45,55 @@ const Register = () => {
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    const decode = credentialResponse.credential.split(".")[1];
+    const userData = JSON.parse(atob(decode));
+
+    const user = {
+      username: userData.email,
+      password: userData.sub,
+      first_name: userData.name,
+    };
+
+    try {
+      dispatch({ type: LOADING });
+      const { data } = await axios.post("/auth", user);
+      dispatch({
+        type: REGISTER,
+        token: data.payload.token,
+        user: data.payload.user,
+      });
+      message.success(data.message || "Google registration successful!");
+      navigate("/dashboard");
+    } catch (error) {
+      dispatch({ type: ERROR });
+      message.error("Google registration failed. Please try again.");
+    }
+  };
+
+  const handleTelegramSuccess = async (userData) => {
+    const user = {
+      username: userData.username,
+      password: userData.id,
+      first_name: userData.first_name,
+    };
+
+    try {
+      dispatch({ type: LOADING });
+      const { data } = await axios.post("/auth", user);
+      dispatch({
+        type: REGISTER,
+        token: data.payload.token,
+        user: data.payload.user,
+      });
+      message.success(data.message || "Telegram registration successful!");
+      navigate("/dashboard");
+    } catch (error) {
+      dispatch({ type: ERROR });
+      message.error("Telegram registration failed. Please try again.");
+    }
   };
 
   return (
@@ -141,23 +188,8 @@ const Register = () => {
       <div className="flex justify-center flex-col">
         <GoogleLogin
           disabled={loading}
-          onSuccess={async (credentialResponse) => {
-            const decode = credentialResponse.credential.split(".")[1];
-            const userData = JSON.parse(atob(decode));
-
-            const user = {
-              username: userData.email,
-              password: userData.sub,
-              first_name: userData.name,
-            };
-            const response = await axios.post("/auth", user);
-            message.success(
-              response.data.message || "Google registration successful!"
-            );
-            navigate("/dashboard");
-          }}
+          onSuccess={handleGoogleSuccess}
           onError={() => {
-            console.log("Login Failed");
             message.error("Google registration failed. Please try again.");
           }}
           useOneTap
@@ -169,21 +201,7 @@ const Register = () => {
         />
         <TelegramLoginButton
           disabled={loading}
-          onSuccess={async (credentialResponse) => {
-            const decode = credentialResponse.credential.split(".")[1];
-            const userData = JSON.parse(atob(decode));
-
-            const user = {
-              username: userData.username,
-              password: userData.id,
-              first_name: userData.first_name,
-            };
-            const response = await axios.post("/auth", user);
-            message.success(
-              response.data.message || "Telegram registration successful!"
-            );
-            navigate("/dashboard");
-          }}
+          onSuccess={handleTelegramSuccess}
           botName={import.meta.env.VITE_TELEGRAM_BOT_USERNAME}
           dataOnauth={(user) => console.log(user)}
           size="large"

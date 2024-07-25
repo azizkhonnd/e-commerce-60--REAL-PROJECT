@@ -1,133 +1,98 @@
-import { useState, useEffect } from "react";
-import { Input, Modal, Upload, Button, notification } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+/* eslint-disable react/prop-types */
+import { Menu, Button, Input, Avatar } from "antd";
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+import useFetch from "../../hooks/useFetch";
 
-const { Search } = Input;
+const Header = ({ collapsed, toggleCollapsed }) => {
+  const navigate = useNavigate();
 
-const Header = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [imageUrl, setImageUrl] = useState(
-    "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-  );
-
-  useEffect(() => {
-    const savedImageUrl = localStorage.getItem("userImageUrl");
-    if (savedImageUrl) {
-      setImageUrl(savedImageUrl);
-    }
-  }, []);
-
-  const onSearch = (value) => {
-    console.log(value);
+  const handleAvatarClick = () => {
+    navigate("/dashboard/user-settings");
   };
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleChange = (info) => {
-    if (info.file.status === "done") {
-      const url = URL.createObjectURL(info.file.originFileObj);
-      setImageUrl(url);
-      localStorage.setItem("userImageUrl", url);
-      setIsModalOpen(false);
-      notification.success({
-        message: "Upload Successful",
-        description: "Your photo has been uploaded successfully.",
-        placement: "bottomRight",
-      });
-    } else if (info.file.status === "error") {
-      notification.error({
-        message: "Upload Failed",
-        description:
-          "There was an error uploading your photo. Please try again.",
-        placement: "bottomRight",
-      });
-    }
-  };
-
-  const customRequest = ({ onSuccess }) => {
-    setTimeout(() => {
-      onSuccess("ok");
-    }, 30);
-  };
+  const [data, loading] = useFetch("/auth/profile");
 
   return (
     <div
       style={{
         display: "flex",
-        justifyContent: "center",
-        padding: "15px 40px",
+        alignItems: "center",
         background: "#001529",
-        width: "100%",
-        position: "relative",
+        padding: "0 16px",
+        height: "64px",
       }}
     >
+      <Button
+        type="text"
+        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        onClick={toggleCollapsed}
+        style={{
+          fontSize: "16px",
+          color: "white",
+          marginRight: "16px",
+          backgroundColor: "#1677ff",
+          borderRadius: "4px",
+          padding: "6px 20px",
+        }}
+      />
+      <Input
+        placeholder="Search..."
+        prefix={<SearchOutlined />}
+        style={{ width: 300, marginRight: "16px" }}
+      />
+      <Menu
+        theme="dark"
+        mode="horizontal"
+        defaultSelectedKeys={["1"]}
+        items={[
+          {
+            key: "1",
+            label: "Item 1",
+          },
+          {
+            key: "2",
+            label: "Item 2",
+          },
+          {
+            key: "3",
+            label: "Item 3",
+          },
+        ]}
+        style={{ flex: 1 }}
+      />
       <div
         style={{
           display: "flex",
-          justifyContent: "space-between",
-          width: "100%",
+          alignItems: "center",
+          marginLeft: "16px",
+          cursor: "pointer",
         }}
+        onClick={handleAvatarClick}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Search
-            style={{ width: 480, display: "flex", justifyContent: "center" }}
-            placeholder="Search..."
-            onSearch={onSearch}
-          />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginLeft: 50,
-            cursor: "pointer",
-          }}
-          onClick={showModal}
-        >
-          <img
-            src={imageUrl}
-            alt="User Avatar"
-            className="user__img"
-            style={{ width: "35px", height: "35px", borderRadius: "50%" }}
-            onError={() =>
-              setImageUrl(
-                "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-              )
-            }
-          />
-        </div>
+        {loading ? (
+          <p style={{ color: "white" }}>Loading...</p>
+        ) : (
+          <>
+            <span style={{ color: "white", marginRight: "8px" }}>
+              {data?.first_name}
+            </span>
+            <Avatar
+              style={{
+                width: 40,
+                height: 40,
+              }}
+              className="bg-green-400"
+            >
+              {data?.first_name?.[0]}
+            </Avatar>
+          </>
+        )}
       </div>
-      <Modal
-        title="Upload User Photo"
-        visible={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <Upload
-          accept="image/*"
-          showUploadList={false}
-          customRequest={customRequest}
-          onChange={handleChange}
-        >
-          <Button icon={<UploadOutlined />}>Click to Upload</Button>
-        </Upload>
-      </Modal>
     </div>
   );
 };

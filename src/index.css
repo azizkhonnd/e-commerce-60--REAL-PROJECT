@@ -15,7 +15,12 @@
     border-radius: 5px;
 }
 
-.ant-menu-item:has(:active) {
+.sidebar__link--active {
+    font-weight: bold;
+    color: #1890ff;
+}
+
+.ant-menu-item:has(.active) {
     color: #fff;
     background-color: #1677ff;
 }
@@ -47,4 +52,9 @@
 
 :where(.css-1uq9j6g).ant-input-search .ant-input-search-button {
     height: 31px;
+}
+
+.ant-layout-sider-children{
+    display: flex;
+    flex-direction: column;
 }

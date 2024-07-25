@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
 import {
   Button,
   Checkbox,
@@ -14,20 +13,15 @@ import { GoogleLogin } from "@react-oauth/google";
 import TelegramLoginButton from "telegram-login-button";
 import axios from "../../../api/index";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  LOGIN,
-  REGISTER,
-  LOADING,
-  ERROR,
-} from "../../../redux/actions/action-types";
+import { LOGIN, LOADING, ERROR } from "../../../redux/actions/action-types";
 
 const { Title, Text } = Typography;
 
 const Login = () => {
+  const navigate = useNavigate();
   const loading = useSelector((state) => state.loading);
   const dispatch = useDispatch();
   const [form] = Form.useForm();
-  const navigate = useNavigate();
 
   const openNotification = (type, message) => {
     notification[type]({
@@ -41,7 +35,7 @@ const Login = () => {
       dispatch({ type: LOADING });
       const { data } = await axios.post("/auth/login", values);
       dispatch({
-        type: REGISTER,
+        type: LOGIN,
         token: data.payload.token,
         user: data.payload.user,
       });
@@ -56,6 +50,51 @@ const Login = () => {
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
+  };
+
+  const handleGoogleLoginSuccess = async (credentialResponse) => {
+    const decode = credentialResponse.credential.split(".")[1];
+    const userData = JSON.parse(atob(decode));
+
+    const user = {
+      username: userData.email,
+      password: userData.sub,
+      first_name: userData.name,
+    };
+
+    try {
+      const { data } = await axios.post("/auth/login", user);
+      dispatch({
+        type: LOGIN,
+        token: data.payload.token,
+        user: data.payload.user,
+      });
+      openNotification("success", "Login successful with Google!");
+      navigate("/dashboard");
+    } catch (error) {
+      openNotification("error", "Google login failed.");
+    }
+  };
+
+  const handleTelegramLoginSuccess = async (userData) => {
+    const user = {
+      username: userData.username,
+      password: userData.id,
+      first_name: userData.first_name,
+    };
+
+    try {
+      const { data } = await axios.post("/auth/login", user);
+      dispatch({
+        type: LOGIN,
+        token: data.payload.token,
+        user: data.payload.user,
+      });
+      openNotification("success", "Login successful with Telegram!");
+      navigate("/dashboard");
+    } catch (error) {
+      openNotification("error", "Telegram login failed.");
+    }
   };
 
   return (
@@ -135,23 +174,7 @@ const Login = () => {
       <div className="flex justify-center flex-col">
         <GoogleLogin
           disabled={loading}
-          onSuccess={async (credentialResponse) => {
-            const decode = credentialResponse.credential.split(".")[1];
-            const userData = JSON.parse(atob(decode));
-
-            const user = {
-              username: userData.email,
-              password: userData.sub,
-              first_name: userData.name,
-            };
-            try {
-              const response = await axios.post("/auth/login", user);
-              openNotification("success", "Login successful with Google!");
-              navigate("/dashboard");
-            } catch (error) {
-              openNotification("error", "Google login failed.");
-            }
-          }}
+          onSuccess={handleGoogleLoginSuccess}
           onError={() => {
             openNotification("error", "Google login failed.");
           }}
@@ -164,22 +187,7 @@ const Login = () => {
         />
         <TelegramLoginButton
           disabled={loading}
-          onSuccess={async (credentialResponse) => {
-            const decode = credentialResponse.credential.split(".")[1];
-            const userData = JSON.parse(atob(decode));
-            const user = {
-              username: userData.username,
-              password: userData.id,
-              first_name: userData.first_name,
-            };
-            try {
-              const response = await axios.post("/auth/login", user);
-              openNotification("success", "Login successful with Telegram!");
-              navigate("/dashboard");
-            } catch (error) {
-              openNotification("error", "Telegram login failed.");
-            }
-          }}
+          onSuccess={handleTelegramLoginSuccess}
           botName={import.meta.env.VITE_TELEGRAM_BOT_USERNAME}
           dataOnauth={(user) => console.log(user)}
           size="large"
@@ -190,7 +198,7 @@ const Login = () => {
       </div>
       <Text className="mt-[20px] block text-center">
         {" "}
-        Don`t have an account? <Link to="/auth/register">Register </Link>{" "}
+        Don’t have an account? <Link to="/auth/register">Register </Link>{" "}
       </Text>
     </Form>
   );

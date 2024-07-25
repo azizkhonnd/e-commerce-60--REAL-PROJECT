@@ -1,4 +1,4 @@
-import { LOGIN, REGISTER, LOADING, ERROR } from '../actions/action-types';
+import { LOGIN, REGISTER, LOADING, ERROR, SIGN_OUT } from '../actions/action-types';
 
 
 const initialState = {
@@ -37,6 +37,14 @@ export const authReducer = (state = initialState, action) => {
                 error: "ERROR",
                 token: null,
                 user: null
+            }
+        case SIGN_OUT:
+            localStorage.removeItem("token")
+            localStorage.removeItem("user")
+            return {
+                ...state,
+                token: null,
+                user: null,
             }
         default:
             return state
