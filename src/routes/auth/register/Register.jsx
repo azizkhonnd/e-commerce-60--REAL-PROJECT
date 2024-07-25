@@ -26,17 +26,24 @@ const Register = () => {
     try {
       dispatch({ type: LOADING });
       const { data } = await axios.post("/auth", values);
-      dispatch({
-        type: REGISTER,
-        token: data.payload.token,
-        user: data.payload.user,
-      });
-      message.success(data.message || "Registration successful!");
-      navigate("/dashboard");
+      console.log("Registration response:", data); // Log the response data
+      if (data.payload) {
+        dispatch({
+          type: REGISTER,
+          token: data.payload.token,
+          user: data.payload.user,
+        });
+        message.success(data.message || "Registration successful!");
+        navigate("/dashboard");
+      } else {
+        throw new Error("Invalid response structure");
+      }
     } catch (error) {
       dispatch({ type: ERROR });
+      console.error("Registration error:", error); // Log the error
       message.error(
         error.response?.data?.message ||
+          error.message ||
           "Registration failed. Please try again."
       );
     }
@@ -60,15 +67,21 @@ const Register = () => {
     try {
       dispatch({ type: LOADING });
       const { data } = await axios.post("/auth", user);
-      dispatch({
-        type: REGISTER,
-        token: data.payload.token,
-        user: data.payload.user,
-      });
-      message.success(data.message || "Google registration successful!");
-      navigate("/dashboard");
+      console.log("Google registration response:", data); // Log the response data
+      if (data.payload) {
+        dispatch({
+          type: REGISTER,
+          token: data.payload.token,
+          user: data.payload.user,
+        });
+        message.success(data.message || "Google registration successful!");
+        navigate("/dashboard");
+      } else {
+        throw new Error("Invalid response structure");
+      }
     } catch (error) {
       dispatch({ type: ERROR });
+      console.error("Google registration error:", error); // Log the error
       message.error("Google registration failed. Please try again.");
     }
   };
@@ -83,15 +96,21 @@ const Register = () => {
     try {
       dispatch({ type: LOADING });
       const { data } = await axios.post("/auth", userData);
-      dispatch({
-        type: REGISTER,
-        token: data.payload.token,
-        user: data.payload.user,
-      });
-      message.success(data.message || "Telegram registration successful!");
-      navigate("/dashboard");
+      console.log("Telegram registration response:", data); // Log the response data
+      if (data.payload) {
+        dispatch({
+          type: REGISTER,
+          token: data.payload.token,
+          user: data.payload.user,
+        });
+        message.success(data.message || "Telegram registration successful!");
+        navigate("/dashboard");
+      } else {
+        throw new Error("Invalid response structure");
+      }
     } catch (error) {
       dispatch({ type: ERROR });
+      console.error("Telegram registration error:", error); // Log the error
       message.error("Telegram registration failed. Please try again.");
     }
   };
