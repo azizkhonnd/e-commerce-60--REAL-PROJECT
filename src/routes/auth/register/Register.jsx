@@ -75,7 +75,7 @@ const Register = () => {
 
   const handleTelegramSuccess = async (user) => {
     const userData = {
-      username: user.username,
+      username: "@" + userData.username.toString(),
       password: user.id,
       first_name: user.first_name,
     };
