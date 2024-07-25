@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   Button,
   Checkbox,
@@ -33,26 +34,16 @@ const Login = () => {
     try {
       dispatch({ type: LOADING });
       const { data } = await axios.post("/auth/login", values);
-      console.log("Login response:", data); // Log the response data
-      if (data.payload && data.payload.token) {
-        dispatch({
-          type: LOGIN,
-          token: data.payload.token,
-          user: data.payload.user,
-        });
-        openNotification("success", "Login successful!");
-        navigate("/dashboard");
-      } else {
-        throw new Error("Invalid response structure");
-      }
+      dispatch({
+        type: LOGIN,
+        token: data.payload.token,
+        user: data.payload.user,
+      });
+      openNotification("success", "Login successful!");
+      navigate("/dashboard");
     } catch (error) {
       dispatch({ type: ERROR });
-      console.error("Login error:", error); // Log the error
-      openNotification(
-        "error",
-        error.response?.data?.message ||
-          "Login failed. Please check your credentials."
-      );
+      openNotification("error", "Login failed. Please check your credentials.");
     }
     form.resetFields();
   };
@@ -73,24 +64,15 @@ const Login = () => {
 
     try {
       const { data } = await axios.post("/auth/login", user);
-      console.log("Google login response:", data); // Log the response data
-      if (data.payload && data.payload.token) {
-        dispatch({
-          type: LOGIN,
-          token: data.payload.token,
-          user: data.payload.user,
-        });
-        openNotification("success", "Login successful with Google!");
-        navigate("/dashboard");
-      } else {
-        throw new Error("Invalid response structure");
-      }
+      dispatch({
+        type: LOGIN,
+        token: data.payload.token,
+        user: data.payload.user,
+      });
+      openNotification("success", "Login successful with Google!");
+      navigate("/dashboard");
     } catch (error) {
-      console.error("Google login error:", error); // Log the error
-      openNotification(
-        "error",
-        error.response?.data?.message || "Google login failed."
-      );
+      openNotification("error", "Google login failed.");
     }
   };
 
@@ -103,24 +85,15 @@ const Login = () => {
 
     try {
       const { data } = await axios.post("/auth/login", user);
-      console.log("Telegram login response:", data); // Log the response data
-      if (data.payload && data.payload.token) {
-        dispatch({
-          type: LOGIN,
-          token: data.payload.token,
-          user: data.payload.user,
-        });
-        openNotification("success", "Login successful with Telegram!");
-        navigate("/dashboard");
-      } else {
-        throw new Error("Invalid response structure");
-      }
+      dispatch({
+        type: LOGIN,
+        token: data.payload.token,
+        user: data.payload.user,
+      });
+      openNotification("success", "Login successful with Telegram!");
+      navigate("/dashboard");
     } catch (error) {
-      console.error("Telegram login error:", error); // Log the error
-      openNotification(
-        "error",
-        error.response?.data?.message || "Telegram login failed."
-      );
+      openNotification("error", "Telegram login failed.");
     }
   };
 
