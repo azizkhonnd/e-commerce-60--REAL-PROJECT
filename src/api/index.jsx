@@ -12,10 +12,11 @@ const apiInstance = axios.create({
 
 apiInstance.interceptors.request.use(
   (request) => {
-    if (request) {
-      request.headers["Authorization"] = `Bearer ${store.getState().token}`;
-      return request;
+    const token = store.getState().token;
+    if (token) {
+      request.headers["Authorization"] = `Bearer ${token}`;
     }
+    return request;
   },
   (error) => {
     return Promise.reject(error);
@@ -27,7 +28,7 @@ apiInstance.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response?.status === 401 || error.reponse?.status === 403) {
+    if (error.response?.status === 401 || error.response?.status === 403) {
       store.dispatch({ type: SIGN_OUT });
     }
     return Promise.reject(error);

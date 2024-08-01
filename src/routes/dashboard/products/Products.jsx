@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { Table, Button, Popconfirm, notification, Image } from "antd";
 import axios from "axios";
 import { DeleteOutlined } from "@ant-design/icons";
 
-const Products = () => {
+const Products = ({ searchQuery }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -14,9 +15,7 @@ const Products = () => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        "https://jsonplaceholder.typicode.com/posts"
-      );
+      const response = await axios.get("https://jsonplaceholder.typicode.com/posts");
       const productsWithImages = response.data.map((product, index) => ({
         ...product,
         image: `https://picsum.photos/200?random=${index}`,
@@ -36,6 +35,10 @@ const Products = () => {
     setProducts(products.filter((product) => product.id !== id));
     notification.success({ message: "Product deleted successfully" });
   };
+
+  const filteredProducts = products.filter((product) =>
+    product.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const columns = [
     {
@@ -80,7 +83,7 @@ const Products = () => {
   return (
     <Table
       columns={columns}
-      dataSource={products}
+      dataSource={filteredProducts}
       loading={loading}
       rowKey="id"
       pagination={{ pageSize: 5 }}
