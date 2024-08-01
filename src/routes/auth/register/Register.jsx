@@ -25,7 +25,7 @@ const Register = () => {
   const onFinish = async (values) => {
     try {
       dispatch({ type: LOADING });
-      const { data } = await axios.post("/auth", values);
+      const { data } = await axios.post("/auth/register", values);
       dispatch({
         type: REGISTER,
         token: data.payload.token,
@@ -36,9 +36,9 @@ const Register = () => {
     } catch (error) {
       dispatch({ type: ERROR });
       message.error(
-        error.response?.data?.message ||
-          "Registration failed. Please try again."
+        error.response?.data?.message || "Registration failed. Please try again."
       );
+      console.error("Error during registration:", error); 
     }
     form.resetFields();
   };
@@ -59,7 +59,7 @@ const Register = () => {
 
     try {
       dispatch({ type: LOADING });
-      const { data } = await axios.post("/auth", user);
+      const { data } = await axios.post("/auth/register", user);
       dispatch({
         type: REGISTER,
         token: data.payload.token,
@@ -70,6 +70,7 @@ const Register = () => {
     } catch (error) {
       dispatch({ type: ERROR });
       message.error("Google registration failed. Please try again.");
+      console.error("Error during Google registration:", error); 
     }
   };
 
@@ -82,7 +83,7 @@ const Register = () => {
 
     try {
       dispatch({ type: LOADING });
-      const { data } = await axios.post("/auth", userData);
+      const { data } = await axios.post("/auth/register", userData);
       dispatch({
         type: REGISTER,
         token: data.payload.token,
@@ -93,6 +94,7 @@ const Register = () => {
     } catch (error) {
       dispatch({ type: ERROR });
       message.error("Telegram registration failed. Please try again.");
+      console.error("Error during Telegram registration:", error); 
     }
   };
 
@@ -210,8 +212,7 @@ const Register = () => {
         />
       </div>
       <Text className="mt-[20px] block text-center">
-        {" "}
-        Already have an account? <Link to="/auth">Login</Link>{" "}
+        Already have an account? <Link to="/auth">Login</Link>
       </Text>
     </Form>
   );
