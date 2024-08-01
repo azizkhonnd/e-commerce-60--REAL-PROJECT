@@ -205,7 +205,7 @@ const Register = () => {
           dataOnauth={handleTelegramSuccess}
           size="large"
           theme="filled_blue"
-          className="w-full mt-[20px] ml-[30px]"
+          className="w-full mt-[20px] ml-[35px]"
           width={350}
         />
       </div>
