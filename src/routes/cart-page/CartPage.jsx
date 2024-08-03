@@ -79,13 +79,13 @@ const CartPage = () => {
             title: 'Action',
             key: 'action',
             render: (_, record) => (
-                <Button type="danger" onClick={() => handleRemove(record._id)}>Remove</Button>
+                <Button className='btnRemove' type="danger" onClick={() => handleRemove(record._id)}>−</Button>
             ),
         },
     ];
 
     return (
-        <div style={{ padding: '20px' }}>
+        <div style={{ padding: '20px', width: '80%', margin: '0 auto', marginTop: '40px',  }}>
             <Table
                 dataSource={cart}
                 columns={columns}
@@ -93,7 +93,7 @@ const CartPage = () => {
                 pagination={false}
             />
             {cart.length > 0 && (
-                <div style={{ padding: '20px', backgroundColor: '#fff', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', maxWidth: '380px', margin: '20px auto' }}>
+                <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '20px', backgroundColor: '#fff', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', maxWidth: '380px', margin: '20px auto', marginRight: '-5px', marginTop:'100px' }}>
                     <h2>Total Price: ${getTotalPrice()}</h2>
                     <p>Total Items: {getTotalQuantity()}</p>
                     <Button
