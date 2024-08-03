@@ -6,7 +6,7 @@ const useFetch = (ENDPOINT) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    let isMounted = true;  // Prevent state updates on unmounted components
+    let isMounted = true;
 
     const loadData = async () => {
       try {
@@ -27,7 +27,7 @@ const useFetch = (ENDPOINT) => {
     loadData();
 
     return () => {
-      isMounted = false;  
+      isMounted = false;
     };
   }, [ENDPOINT]);
 

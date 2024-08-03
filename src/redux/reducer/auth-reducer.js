@@ -3,7 +3,7 @@ import { LOGIN, REGISTER, LOADING, ERROR, SIGN_OUT } from '../actions/action-typ
 
 const initialState = {
     token: localStorage.getItem("token") || null,
-    user: localStorage.getItem("user") || null,
+    user: JSON.parse(localStorage.getItem("user")) || null,
     loading: false,
     isError: false,
     isSuccess: false,
