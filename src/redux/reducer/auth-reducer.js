@@ -1,55 +1,61 @@
-import { LOGIN, REGISTER, LOADING, ERROR, SIGN_OUT } from '../actions/action-types';
 
+import {
+    ERROR,
+    LOADING,
+    LOGIN,
+    REGISTER,
+} from "../actions/action-types";
 
 const initialState = {
     token: localStorage.getItem("token") || null,
     user: JSON.parse(localStorage.getItem("user")) || null,
-    loading: false,
     isError: false,
     isSuccess: false,
-    error: null
-}
-
+    loading: false,
+    error: null,
+};
 
 export const authReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN:
         case REGISTER:
-            localStorage.setItem("token", action.token)
-            localStorage.setItem("user", JSON.stringify(action.user))
+            localStorage.setItem("token", action.token);
+            localStorage.setItem("user", JSON.stringify(action.user));
             return {
+                ...state,
                 token: action.token,
                 user: action.user,
-                loading: false,
+                error: null,
                 isError: false,
                 isSuccess: true,
-                error: null
-            }
+                loading: false,
+            };
         case LOADING:
             return {
                 ...state,
-                loading: true
-            }
+                loading: true,
+            };
         case ERROR:
             return {
-                isError: true,
-                loading: false,
+                ...state,
                 error: "ERROR",
+                isError: true,
+                isSuccess: false,
+                loading: false,
+                user: null,
                 token: null,
-                user: null
-            }
-        case SIGN_OUT:
-            localStorage.removeItem("token")
-            localStorage.removeItem("user")
+            };
+        case "SIGN_OUT":
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
             return {
                 ...state,
                 token: null,
                 user: null,
-            }
+            };
         default:
-            return state
+            return state;
     }
-}
-
+};
 
 export default authReducer;
