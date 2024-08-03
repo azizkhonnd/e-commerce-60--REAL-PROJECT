@@ -115,6 +115,11 @@
 
 .btnRemove {
     background-color: #fff;
-    background-color: rgb(236, 108, 108);
+    background-color: rgb(247, 89, 89);
     font-weight: 600;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
 }
