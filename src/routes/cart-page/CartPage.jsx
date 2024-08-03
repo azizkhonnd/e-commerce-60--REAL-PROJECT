@@ -79,7 +79,7 @@ const CartPage = () => {
             title: 'Action',
             key: 'action',
             render: (_, record) => (
-                <Button className='btnRemove' type="danger" onClick={() => handleRemove(record._id)}>−</Button>
+                <Button type="danger" onClick={() => handleRemove(record._id)}>Remove</Button>
             ),
         },
     ];
@@ -87,23 +87,21 @@ const CartPage = () => {
     return (
         <div style={{ padding: '20px' }}>
             <Table
-                className='max-w-[1180px] mx-auto my-20'
                 dataSource={cart}
                 columns={columns}
                 rowKey="_id"
                 pagination={false}
             />
             {cart.length > 0 && (
-                <div className="totalItem max-w-[380px] mx-auto my-20 mr-[175px]" style={{ padding: '20px', backgroundColor: '#fff', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
-                    <h2 style={{ marginBottom: 10 }}>Total Price: ${getTotalPrice()}</h2>
-                    <p className='totalItems' style={{ marginBottom: 20 }}>Total Items: {getTotalQuantity()}</p>
-
+                <div style={{ padding: '20px', backgroundColor: '#fff', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', maxWidth: '380px', margin: '20px auto' }}>
+                    <h2>Total Price: ${getTotalPrice()}</h2>
+                    <p>Total Items: {getTotalQuantity()}</p>
                     <Button
                         type="primary"
                         onClick={() => navigate('/')}
                         style={{ width: '100%' }}
                     >
-                        Check out
+                        Checkout
                     </Button>
                 </div>
             )}

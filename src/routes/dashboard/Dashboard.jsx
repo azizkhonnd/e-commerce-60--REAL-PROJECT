@@ -1,11 +1,9 @@
-/* eslint-disable react/prop-types */
 import { Layout } from "antd";
 import { useState, createContext } from "react";
 import { Outlet } from "react-router-dom";
 import SiderComponent from "../../components/sider/Sider";
 import Header from "../../components/header/Header";
 
-// Create a context for the search term
 export const SearchContext = createContext();
 
 const Dashboard = () => {
