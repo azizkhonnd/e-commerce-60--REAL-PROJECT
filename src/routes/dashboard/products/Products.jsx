@@ -1,12 +1,13 @@
-import { useOutletContext } from 'react-router-dom';
-import useFetch from '../../../hooks/useFetch';
+import { useContext } from "react";
 import { Table, Button, Popconfirm, notification } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import axios from '../../../api';
+import useFetch from '../../../hooks/useFetch';
+import { SearchContext } from '../../dashboard/Dashboard';
 const { Column } = Table;
 
 const Products = () => {
-  const { termSearch = '' } = useOutletContext() || {};
+  const searchQuery = useContext(SearchContext);
   const [data, loading, setData] = useFetch('/product/all');
 
   const handleDelete = async (id) => {
@@ -26,9 +27,9 @@ const Products = () => {
 
   const filteredData = data?.filter((product) => {
     return (
-      product.product_name.toLowerCase().includes(termSearch.toLowerCase()) ||
-      product.category.toLowerCase().includes(termSearch.toLowerCase()) ||
-      product.description.toLowerCase().includes(termSearch.toLowerCase())
+      product.product_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.description.toLowerCase().includes(searchQuery.toLowerCase())
     );
   });
 

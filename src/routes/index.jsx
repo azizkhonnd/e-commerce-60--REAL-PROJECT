@@ -16,7 +16,7 @@ const SingleProduct = lazy(() => import("../routes/single-page/SingleProduct"));
 const Login = lazy(() => import("./auth/login/Login"));
 const Register = lazy(() => import("./auth/register/Register"));
 
-const RouteController = ({ searchQuery, onSearch }) => {
+const RouteController = () => {
   const auth = useSelector((state) => state?.token);
   return useRoutes([
     {
@@ -75,7 +75,7 @@ const RouteController = ({ searchQuery, onSearch }) => {
       path: "dashboard",
       element: (
         <Suspense>
-          <Dashboard searchQuery={searchQuery} onSearch={onSearch} />
+          <Dashboard />
         </Suspense>
       ),
       children: [
@@ -83,7 +83,7 @@ const RouteController = ({ searchQuery, onSearch }) => {
           path: "",
           element: (
             <Suspense>
-              <Products searchQuery={searchQuery} />
+              <Products />
             </Suspense>
           ),
         },

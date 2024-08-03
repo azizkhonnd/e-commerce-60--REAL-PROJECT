@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import useFetch from "../../hooks/useFetch";
 import Loading from "../../utils";
-import { Card, Button, Carousel, message } from 'antd';
+import { Card, Button, Carousel } from 'antd';
 const { Meta } = Card;
 
 const SingleProduct = () => {
@@ -10,7 +10,7 @@ const SingleProduct = () => {
     const [product, isLoading, error] = useFetch(`/product/single-product/${id}`);
     const [quantity, setQuantity] = useState(1);
     const [currentImage, setCurrentImage] = useState(0);
-    const [activeThumbnail, setActiveThumbnail] = useState(null);
+    const [activeThumbnail, setActiveThumbnail] = useState(null); 
     const carouselRef = useRef(null);
 
     const handleIncrement = () => setQuantity(prev => prev + 1);
@@ -32,26 +32,25 @@ const SingleProduct = () => {
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
         cart.push({ ...product, quantity });
         localStorage.setItem('cart', JSON.stringify(cart));
-        message.success('Product added to cart');
     };
 
     const handleThumbnailClick = (index) => {
         setCurrentImage(index);
-        setActiveThumbnail(index);
+        setActiveThumbnail(index); 
         carouselRef.current.goTo(index);
     };
 
     return (
         <div style={{ padding: '20px', display: 'flex', alignItems: 'center', marginTop: '250px', height: "200px", justifyContent: 'center', marginLeft: '200px' }}>
-            <div style={{ display: 'flex', flexDirection: 'row', width: '80%', maxWidth: 1200, height: '400px', gap: 10 }}>
+            <div style={{ display: 'flex', flexDirection: 'row', width: '80%', maxWidth: 1200, height: '400px', gap:10 }}>
                 <ul style={{ display: 'flex', flexDirection: 'column', listStyle: 'none', padding: 0, marginTop: '-5px', gap: '20px' }}>
                     {product.product_images.map((image, index) => (
-                        <li key={index} style={{ margin: '6.0px 5px', marginTop: '9.3px' }}>
+                        <li key={index} style={{ margin: '6.0px 5px',marginTop:'9.3px' }}>
                             <img
                                 alt={`thumbnail-${index}`}
                                 src={image}
                                 style={{
-                                    marginTop: '1px',
+                                    marginTop:'1px',
                                     width: '70px',
                                     height: '60.px',
                                     cursor: 'pointer',
