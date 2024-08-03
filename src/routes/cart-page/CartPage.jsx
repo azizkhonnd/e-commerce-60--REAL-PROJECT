@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
+
 import { Table, Button } from 'antd';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 
 const CartPage = () => {
     const [cart, setCart] = useState([]);
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate();
 
     useEffect(() => {
         const cartData = JSON.parse(localStorage.getItem('cart')) || [];
@@ -91,7 +92,7 @@ const CartPage = () => {
     ];
 
     return (
-        <>
+        <div style={{ padding: '20px' }}>
             <Table
                 className='max-w-[1180px] mx-auto my-20 bordered'
                 dataSource={cart}
@@ -117,7 +118,7 @@ const CartPage = () => {
                     </>
                 )}
             </div>
-        </>
+        </div>
     );
 };
 

@@ -12,7 +12,7 @@ import axios from '../../api';
 const { Meta } = Card;
 
 const Home = () => {
-  const user = useSelector(state => state?.user);
+  const user = useSelector(state => state?.user || {});
   const [trigger, setTrigger] = useState(false);
   const [loadingProductId, setLoadingProductId] = useState(null);
   const [data, isLoading] = useFetch("/product/all", [trigger]);
@@ -38,7 +38,7 @@ const Home = () => {
   const handleLikeAndDislike = async (product) => {
     try {
       setLoadingProductId(product._id);
-      const isLiked = product.likedby.includes(user.username);
+      const isLiked = user.username && product.likedby.includes(user.username);
       const response = await axios.patch(`/product/${product._id}/${isLiked ? 'unlike' : 'like'}`);
 
       if (response.status === 202) {
@@ -75,7 +75,7 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <div style={{ padding: '20px' }}>
       {(isLoading || loadingProductId) ? <Loading /> :
         <div className='max-w-[1280px] mx-auto my-20 gap-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
           {data && data.map((product, index) => (
@@ -123,7 +123,7 @@ const Home = () => {
                 disabled={loadingProductId === product._id}
               >
                 {loadingProductId === product._id ? <Spin size="small" /> :
-                  (product.likedby.includes(user.username) ? <AiFillHeart size={22} /> : <AiOutlineHeart size={22} />)
+                  (user.username && product.likedby.includes(user.username) ? <AiFillHeart size={22} /> : <AiOutlineHeart size={22} />)
                 }
               </Button>
               <Button
