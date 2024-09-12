@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Table, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../../components/navbar/Navbar';
 
 const CartPage = () => {
     const [cart, setCart] = useState([]);
@@ -85,6 +86,8 @@ const CartPage = () => {
     ];
 
     return (
+        <>
+        <Navbar />
         <div style={{ padding: '20px', width: '80%', margin: '0 auto', marginTop: '40px',  }}>
             <Table
                 dataSource={cart}
@@ -99,13 +102,14 @@ const CartPage = () => {
                     <Button
                         type="primary"
                         onClick={() => navigate('/')}
-                        style={{ width: '100%' }}
+                        style={{ width: '100%', backgroundColor: 'orange', color: 'white' }}
                     >
                         Checkout
                     </Button>
                 </div>
             )}
         </div>
+        </>
     );
 };
 
