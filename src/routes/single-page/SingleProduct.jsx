@@ -32,7 +32,14 @@ const SingleProduct = () => {
 
     const handleAddToCart = () => {
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        cart.push({ ...product, quantity });
+        const existingProduct = cart.find(item => item._id === product._id);
+        
+        if (existingProduct) {
+            existingProduct.quantity += quantity; // Update quantity if the product is already in the cart
+        } else {
+            cart.push({ ...product, quantity }); // Add new product to the cart
+        }
+        
         localStorage.setItem('cart', JSON.stringify(cart));
     };
 
@@ -93,21 +100,21 @@ const SingleProduct = () => {
                         </div>
                     </div>
                     <div style={{ flex: 2, padding: '20px', marginTop: '20px' }}>
-                        <Meta 
-                            className='product__name '  
+                        <Meta
+                            className='product__name '
                             title={product.product_name}
-                            description={<span className="sale-price "> Price___________________ ${product.sale_price}</span>}
+                            description={<span className="sale-price "> Price <span className='dotted__line'>___________________</span> ${product.sale_price}</span>}
                             style={{ marginBottom: '40px' }}
                         />
                         <p className="product-description">{product.description}</p>
                         <div className='flex items-center gap-5 mt-10 w-[68%] justify-between'>
                             <div>
-                                <Button onClick={handleDecrement}>-</Button>
+                                <Button type='primary' style={{ backgroundColor: 'orange' }} onClick={handleDecrement}>-</Button>
                                 <span style={{ margin: '0 10px' }}>{quantity}</span>
-                                <Button onClick={handleIncrement}>+</Button>
+                                <Button type='primary' style={{ backgroundColor: 'orange' }} onClick={handleIncrement}>+</Button>
                             </div>
                             <div>
-                                <Button style={{backgroundColor: 'orange'}} onClick={handleAddToCart} type="primary" className='w-50'>Add to Cart</Button>
+                                <Button style={{ backgroundColor: 'orange' }} onClick={handleAddToCart} type="primary" className='w-50'>Add to Cart</Button>
                             </div>
                         </div>
                     </div>

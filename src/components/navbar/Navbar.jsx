@@ -8,21 +8,22 @@ import './Nav.css';
 
 const Navbar = ({ cartItems = [] }) => {
     return (
-        <div className='nav__container bg-orange-400'>
-            <div className='container py-5'>
+        <div className='nav__container bg-orange-500'>
+            <div className='container py-3'>
                 <div className="flex justify-between items-center ">
                     <div className="flex">
                         <div className="site__logo flex items-center gap-[40px]">
-                            <div>
+                            <div className="flex items-center gap-5">
                                 <Link to='/'>
-                                    <img src={SiteLogo} alt="Site Logo" width={100} height={50} />
+                                    <img src={SiteLogo} alt="Site Logo" width={50} height={50} />
                                 </Link>
+                                <div>
+                                    <Link to='/'>
+                                        <h2 className="text-white text-2xl">Orange Shop</h2>
+                                    </Link>
+                                </div>
                             </div>
-                            <div className="flex gap-4 items-center ">
-                                <Link className="nav__link text-white" to='/'>Home</Link>
-                                <Link className="nav__link text-white" to='/about'>About</Link>
-                                <Link className="nav__link text-white" to='/contact'>Contact</Link>
-                            </div>
+
                         </div>
                     </div>
                     <div className="flex items-center gap-4">

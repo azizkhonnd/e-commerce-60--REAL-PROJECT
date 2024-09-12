@@ -16,7 +16,7 @@
 }
 
 .container {
-    padding-top: 20px;
+    padding-top: 10px;
     margin: 0 auto;
     width: 1200px;
     height: auto;
@@ -121,9 +121,9 @@
 }
 
 .btnRemove {
-    background-color: rgb(241, 118, 118);
+    background-color: orange;
     font-weight: 500;
-    color: #e12121;
+    color: #ffffff;
     border: none;
     border-radius: 50%;
     width: 30px;
